@@ -31,5 +31,9 @@ public class Position
 		this.dimX = x;
 	}
 
+	public void add(Vector v) {
+		this.setX(this.getX() + v.getDX());
+		this.setY(this.getY() + v.getDY());
+	}
 
 }
