@@ -1,16 +1,13 @@
-package cz.cvut.fit.miadp.mvcgame.model.gameObjects;
+package cz.cvut.fit.miadp.mvcgame.model.gameobjects;
 
 import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
+import cz.cvut.fit.miadp.mvcgame.visitor.GameObjectsRender;
 
 
 public abstract class AbsGameObject {
     
     protected Position position;
-
-    public AbsGameObject(Position initialPosition) {
-        this.position = initialPosition;
-    }
 
     public void move(Vector v) {
         this.position.add(v);
@@ -19,5 +16,7 @@ public abstract class AbsGameObject {
     public Position getPosition() {
         return this.position;
     }
+
+    public abstract void acceptVisitor(GameObjectsRender render);
 
 }

@@ -3,12 +3,15 @@ package cz.cvut.fit.miadp.mvcgame.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactory_A;
+import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
-import cz.cvut.fit.miadp.mvcgame.model.gameObjects.Cannon;
-import cz.cvut.fit.miadp.mvcgame.model.gameObjects.Collision;
-import cz.cvut.fit.miadp.mvcgame.model.gameObjects.Enemy;
-import cz.cvut.fit.miadp.mvcgame.model.gameObjects.GameInfo;
-import cz.cvut.fit.miadp.mvcgame.model.gameObjects.Missile;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameObject;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.Collision;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.Enemy;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.GameInfo;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 import cz.cvut.fit.miadp.mvcgame.observer.IObservable;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 
@@ -16,22 +19,24 @@ import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 public class GameModel implements IObservable {
 
     private List<IObserver> observers;
+    private IGameObjectFactory goFactory;
 
     private int score;
     private GameInfo gameInfo;
 
-    private Cannon cannon;
-    private ArrayList<Enemy> enemies = new ArrayList<>();
-    private ArrayList<Collision> collisions = new ArrayList<>();
-    private ArrayList<Missile> missiles = new ArrayList<>();
+    private AbsCannon cannon;
+    private List<Enemy> enemies = new ArrayList<>();
+    private List<Collision> collisions = new ArrayList<>();
+    private List<AbsMissile> missiles = new ArrayList<>();
 
 
     public GameModel() {
+        this.observers = new ArrayList<IObserver>();
+        this.goFactory = new GameObjectsFactory_A();
         this.score = 0;
         this.gameInfo = new GameInfo(new Position(MvcGameConfig.INFO_POS_X, MvcGameConfig.INFO_POS_Y), this);
-        this.cannon = new Cannon(new Position(MvcGameConfig.CANNON_POS_X, MvcGameConfig.CANNON_POS_Y));
+        this.cannon = this.goFactory.createCannon();
         this.generateEnemies();
-        this.observers = new ArrayList<IObserver>();
     }
 
     private void generateEnemies() {
@@ -50,12 +55,24 @@ public class GameModel implements IObservable {
         return this.gameInfo;
     }
 
-    public Cannon getCannon() {
+    public AbsCannon getCannon() {
         return this.cannon;
     }
 
-    public ArrayList<Enemy> getEnemies() {
+    public List<Enemy> getEnemies() {
         return this.enemies;
+    }
+
+    public List<AbsMissile> getMissiles() {
+        return this.missiles;
+    }
+
+    public List<AbsGameObject> getGameObjects() {
+        List<AbsGameObject> go = new ArrayList<>();
+        go.addAll(this.missiles);
+        go.add(this.cannon);
+        // TODO: enemies, gameInfo, collisions
+        return go;
     }
 
     public void moveCannonUp() {
@@ -68,9 +85,35 @@ public class GameModel implements IObservable {
         this.notifyObservers();
     }
 
+    public void cannonShoot() {
+        this.missiles.add(this.cannon.shoot());
+        this.notifyObservers();
+    }
+
+    public void timeTick() {
+        this.update();
+    }
+
     public void update() {
-        // TODO
-        // this.moveMissiles()
+        this.moveMissiles();
+    }
+
+    private void moveMissiles() {
+        for (AbsMissile missile : this.missiles) {
+            missile.move(new Vector(MvcGameConfig.MOVE_STEP, 0));
+        }
+        this.destroyMissiles();
+        this.notifyObservers();
+    }
+
+    private void destroyMissiles() {
+        List<AbsMissile> toRemove = new ArrayList<>();
+        for (AbsMissile missile : this.missiles) {
+            if (missile.getPosition().getX() > MvcGameConfig.SCENE_WITH) {
+                
+            }
+        }
+        this.missiles.removeAll(toRemove);
     }
 
     @Override

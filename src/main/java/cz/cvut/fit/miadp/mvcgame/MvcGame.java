@@ -26,7 +26,7 @@ public class MvcGame {
 
     public void update() {
         // nothing yet
-        this.model.update();
+        this.model.timeTick();
     }
 
     public void render(GraphicsContext gc) {
