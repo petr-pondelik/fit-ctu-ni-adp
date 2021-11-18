@@ -4,12 +4,12 @@ import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
 
-public class Cannon extends GameObject {
+public class Cannon extends AbsGameObject {
     
     //private int power;
 
     public Cannon(Position initialPosition) {
-        this.position = initialPosition;
+        super(initialPosition);
     }
 
     public void moveUp() {

@@ -29,8 +29,9 @@ public class MvcGame {
         this.model.update();
     }
 
-    public void render(GraphicsContext gr) {
-        this.view.render(gr);
+    public void render(GraphicsContext gc) {
+        this.view.setGraphicsContext(gc);
+        this.view.render();
     }
 
     public String getWindowTitle() {
@@ -38,11 +39,11 @@ public class MvcGame {
     }
 
     public int getWindowWidth() {
-        return MvcGameConfig.MAX_X;
+        return MvcGameConfig.SCENE_WITH;
     }
 
     public int getWindowHeight() {
-        return MvcGameConfig.MAX_Y;
+        return MvcGameConfig.SCENE_HEIGHT;
     }
 
 }
