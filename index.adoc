@@ -1,7 +1,5 @@
 = NI-ADP 2021/22: MVC Game
 
-TODO
-* Zajistit, aby počáteční pozice missiles odpovídala aktuální pozici kanonu
-* Abstraktní game objecty
-* Family_B
-* Visitory (+ na počítání herních objektů)
+Nápady:
+
+* Visitor na počítání herních objektů

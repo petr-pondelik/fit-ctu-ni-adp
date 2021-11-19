@@ -8,6 +8,7 @@ public class MvcGameConfig
 
     // General config
     public static final int MOVE_STEP = 5;
+    public static final int ANGLE_STEP = 2;
     public static final int ENEMIES_CNT = 10;
 
     // Positions

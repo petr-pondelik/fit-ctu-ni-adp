@@ -1,4 +1,4 @@
-package cz.cvut.fit.miadp.mvcgame.model.gameobjects.family_A;
+package cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyB;
 
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
@@ -6,14 +6,13 @@ import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
-import cz.cvut.fit.miadp.mvcgame.visitor.GameObjectsRender;
 
 
-public class Cannon_A extends AbsCannon {
+public class CannonB extends AbsCannon {
     
     private IGameObjectFactory goFact;
 
-    public Cannon_A(Position initialPosition, IGameObjectFactory goFact) {
+    public CannonB(Position initialPosition, IGameObjectFactory goFact) {
         this.position = initialPosition;
         this.goFact = goFact;
     }
@@ -29,13 +28,20 @@ public class Cannon_A extends AbsCannon {
     }
 
     @Override
-    public AbsMissile shoot() {
-        return this.goFact.createMissile();
+    public void aimUp() {
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
-    public void acceptVisitor(GameObjectsRender render) {
-        render.visitCannon(this);        
+    public void aimDown() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public AbsMissile shoot() {
+        return this.goFact.createMissile(new Position(this.position.getX(), this.position.getY()));
     }
 
 }

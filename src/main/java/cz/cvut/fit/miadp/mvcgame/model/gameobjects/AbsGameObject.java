@@ -2,10 +2,11 @@ package cz.cvut.fit.miadp.mvcgame.model.gameobjects;
 
 import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
-import cz.cvut.fit.miadp.mvcgame.visitor.GameObjectsRender;
+import cz.cvut.fit.miadp.mvcgame.visitor.IVisitable;
+import cz.cvut.fit.miadp.mvcgame.visitor.IVisitor;
 
 
-public abstract class AbsGameObject {
+public abstract class AbsGameObject implements IVisitable {
     
     protected Position position;
 
@@ -17,6 +18,6 @@ public abstract class AbsGameObject {
         return this.position;
     }
 
-    public abstract void acceptVisitor(GameObjectsRender render);
+    public abstract void acceptVisitor(IVisitor visitor);
 
 }

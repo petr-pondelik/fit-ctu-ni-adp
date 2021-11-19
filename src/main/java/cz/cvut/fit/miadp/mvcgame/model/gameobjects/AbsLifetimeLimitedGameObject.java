@@ -10,7 +10,7 @@ public abstract class AbsLifetimeLimitedGameObject extends AbsGameObject {
     
     protected LocalDateTime bornAt;
 
-    AbsLifetimeLimitedGameObject(Position initialPosition) {
+    protected AbsLifetimeLimitedGameObject(Position initialPosition) {
         this.position = initialPosition;
         this.bornAt = LocalDateTime.now();
     }

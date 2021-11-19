@@ -3,14 +3,14 @@ package cz.cvut.fit.miadp.mvcgame.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactory_A;
+import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryA;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCollision;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameInfo;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameObject;
-import cz.cvut.fit.miadp.mvcgame.model.gameobjects.Collision;
-import cz.cvut.fit.miadp.mvcgame.model.gameobjects.Enemy;
-import cz.cvut.fit.miadp.mvcgame.model.gameobjects.GameInfo;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 import cz.cvut.fit.miadp.mvcgame.observer.IObservable;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
@@ -22,19 +22,19 @@ public class GameModel implements IObservable {
     private IGameObjectFactory goFactory;
 
     private int score;
-    private GameInfo gameInfo;
+    private AbsGameInfo gameInfo;
 
     private AbsCannon cannon;
-    private List<Enemy> enemies = new ArrayList<>();
-    private List<Collision> collisions = new ArrayList<>();
+    private List<AbsEnemy> enemies = new ArrayList<>();
     private List<AbsMissile> missiles = new ArrayList<>();
+    private List<AbsCollision> collisions = new ArrayList<>();
 
 
     public GameModel() {
         this.observers = new ArrayList<IObserver>();
-        this.goFactory = new GameObjectsFactory_A();
+        this.goFactory = new GameObjectsFactoryA();
         this.score = 0;
-        this.gameInfo = new GameInfo(new Position(MvcGameConfig.INFO_POS_X, MvcGameConfig.INFO_POS_Y), this);
+        this.gameInfo = this.goFactory.createGameInfo(this);
         this.cannon = this.goFactory.createCannon();
         this.generateEnemies();
     }
@@ -42,7 +42,7 @@ public class GameModel implements IObservable {
     private void generateEnemies() {
         for (int i = 0; i < MvcGameConfig.ENEMIES_CNT; i++) {
             this.enemies.add(
-                new Enemy( new Position((int) (Math.random() * 500 + 400), (int) (Math.random() * 500 + 150) ) )
+                this.goFactory.createEnemy( new Position((int) (Math.random() * 500 + 400), (int) (Math.random() * 500 + 150) ) )
             );
         }
     }
@@ -51,7 +51,7 @@ public class GameModel implements IObservable {
         return this.score;
     }
 
-    public GameInfo getGameInfo() {
+    public AbsGameInfo getGameInfo() {
         return this.gameInfo;
     }
 
@@ -59,7 +59,7 @@ public class GameModel implements IObservable {
         return this.cannon;
     }
 
-    public List<Enemy> getEnemies() {
+    public List<AbsEnemy> getEnemies() {
         return this.enemies;
     }
 
@@ -69,9 +69,11 @@ public class GameModel implements IObservable {
 
     public List<AbsGameObject> getGameObjects() {
         List<AbsGameObject> go = new ArrayList<>();
-        go.addAll(this.missiles);
+        go.add(this.gameInfo);
         go.add(this.cannon);
-        // TODO: enemies, gameInfo, collisions
+        go.addAll(this.enemies);
+        go.addAll(this.missiles);
+        go.addAll(this.collisions);
         return go;
     }
 
