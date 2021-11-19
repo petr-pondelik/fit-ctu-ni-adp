@@ -24,8 +24,26 @@ public class GameController {
             case "SPACE":
                 this.model.cannonShoot();
                 break;
+            case "A":
+                this.model.aimCannonUp();
+                break;
+            case "Z":
+                this.model.aimCannonDown();
+                break;
+            case "Q":
+                this.model.cannonPowerDown();
+                break;
+            case "W":
+                this.model.cannonPowerUp();
+                break;
+            case "S":
+                this.model.toggleMovingStrategy();
+                break;
+            case "ALT":
+                this.model.toggleShootingMode();
+                break;
             default:
-                // nothing
+                System.out.println(code);
             }
         }
     }

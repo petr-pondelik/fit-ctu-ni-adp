@@ -50,8 +50,9 @@ public class MvcGameJavaFxLauncher extends Application {
                     String code = e.getCode().toString();
  
                     // only add once... prevent duplicates
-                    if ( !pressedKeysCodes.contains(code) )
+                    if (!pressedKeysCodes.contains(code)) {
                         pressedKeysCodes.add( code );
+                    }
                 }
             }
         );
