@@ -2,7 +2,8 @@ package cz.cvut.fit.miadp.mvcgame.controller;
 
 import java.util.List;
 
-import cz.cvut.fit.miadp.mvcgame.memento.CareTaker;
+import cz.cvut.fit.miadp.mvcgame.command.AbsGenericGameCommand;
+import cz.cvut.fit.miadp.mvcgame.command.GenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.model.IGameModel;
 
 
@@ -18,41 +19,47 @@ public class GameController {
         for (String code : pressedKeysCodes) {
             switch (code) {
             case "UP":
-                this.model.moveCannonUp();
+                this.registerCommandByName("moveCannonUp");
                 break;
             case "DOWN":
-                this.model.moveCannonDown();
+                this.registerCommandByName("moveCannonDown");
                 break;
             case "SPACE":
-                this.model.cannonShoot();
+                this.registerCommandByName("cannonShoot");
                 break;
             case "A":
-                this.model.aimCannonUp();
+                this.registerCommandByName("aimCannonUp");
                 break;
             case "Z":
-                this.model.aimCannonDown();
+                this.registerCommandByName("aimCannonDown");
                 break;
             case "Q":
-                this.model.cannonPowerDown();
+                this.registerCommandByName("cannonPowerDown");
                 break;
             case "W":
-                this.model.cannonPowerUp();
+                this.registerCommandByName("cannonPowerUp");
                 break;
             case "SHIFT":
-                this.model.toggleMovingStrategy();
+                this.registerCommandByName("toggleMovingStrategy");
                 break;
             case "CONTROL":
-                this.model.toggleShootingMode();
+                this.registerCommandByName("toggleShootingMode");
                 break;
-            case "S":
-                CareTaker.getInstance().createMemento();
-                break;
-            case "R":
-                CareTaker.getInstance().setMemento();
+            case "B":
+                this.model.undoLastCommand();
                 break;
             default:
                 System.out.println(code);
             }
+        }
+    }
+
+    private void registerCommandByName(String cmdName) {
+        try {
+            GenericGameCommand cmd = new GenericGameCommand(this.model, this.model.getClass().getMethod(cmdName));
+            this.model.registerCommand(cmd);
+        } catch (NoSuchMethodException | SecurityException e) {
+            e.printStackTrace();
         }
     }
 

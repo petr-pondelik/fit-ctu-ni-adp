@@ -2,6 +2,7 @@ package cz.cvut.fit.miadp.mvcgame.model;
 
 import java.util.List;
 
+import cz.cvut.fit.miadp.mvcgame.command.AbsGenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameInfo;
@@ -29,12 +30,15 @@ public interface IGameModel extends IObservable {
     public List<AbsEnemy> getEnemies();
     public List<AbsMissile> getMissiles();
     public List<AbsGameObject> getGameObjects();
+    public IMovingStrategy getMovingStrategy();
 
     public void update();
     public void timeTick();
 
-    public IMovingStrategy getMovingStrategy();
     public Object createMemento();
     public void setMemento(Object memento);
+
+    public void registerCommand(AbsGenericGameCommand cmd);
+    public void undoLastCommand();
 
 }

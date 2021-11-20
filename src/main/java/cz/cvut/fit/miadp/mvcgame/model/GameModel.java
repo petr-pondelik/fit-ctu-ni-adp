@@ -1,10 +1,15 @@
 package cz.cvut.fit.miadp.mvcgame.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryA;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
+import cz.cvut.fit.miadp.mvcgame.command.AbsGenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCollision;
@@ -33,6 +38,8 @@ public class GameModel implements IGameModel {
     private List<AbsMissile> missiles = new ArrayList<>();
     private List<AbsCollision> collisions = new ArrayList<>();
 
+    private Queue<AbsGenericGameCommand> unexecutedCmds = new LinkedBlockingQueue<>();
+    private Stack<AbsGenericGameCommand> executedCmds = new Stack<>();
 
     public GameModel() {
         this.observers = new ArrayList<IObserver>();
@@ -66,6 +73,10 @@ public class GameModel implements IGameModel {
 
     public AbsCannon getCannon() {
         return this.cannon;
+    }
+
+    public Position getCannonPosition() {
+        return new Position(this.cannon.getPosition().getX(), this.cannon.getPosition().getY());
     }
 
     public List<AbsEnemy> getEnemies() {
@@ -122,6 +133,7 @@ public class GameModel implements IGameModel {
     }
 
     public void update() {
+        this.executeCmds();
         this.moveMissiles();
     }
 
@@ -190,7 +202,7 @@ public class GameModel implements IGameModel {
         Memento m = new Memento();
         m.score = this.score;
         m.movingStrategy = this.movingStrategy;
-        m.cannonPosition = this.getCannon().getPosition();
+        m.cannonPosition = this.getCannonPosition();
         m.cannonPower = this.getCannon().getPower();
         m.cannonAngle = this.getCannon().getAngle();
         m.shootingMode = this.getCannon().getShootingMode();
@@ -208,6 +220,31 @@ public class GameModel implements IGameModel {
         this.cannon.setShootingMode(m.shootingMode);
         this.enemies.clear();
         this.enemies.addAll(m.enemies);
+    }
+
+    @Override
+    public void registerCommand(AbsGenericGameCommand cmd) {
+        this.unexecutedCmds.add(cmd);
+    }
+
+    @Override
+    public void undoLastCommand() {
+        if (this.executedCmds.isEmpty()) { return; }
+        AbsGenericGameCommand cmd = this.executedCmds.pop();
+        cmd.unexecute();
+        this.notifyObservers();
+    }
+
+    public void executeCmds() {
+        while(!this.unexecutedCmds.isEmpty()) {
+            AbsGenericGameCommand cmd = this.unexecutedCmds.poll();
+            try {
+                cmd.doExecute();
+                this.executedCmds.push(cmd);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

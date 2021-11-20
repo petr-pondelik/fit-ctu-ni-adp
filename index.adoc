@@ -1,11 +1,12 @@
 = NI-ADP 2021/22: MVC Game
 
-TODO:
+== Navíc oproti standardnímu řešení
 
 * Lepší řízení shooting mode
     * v ShottingMode mít nextState(), která by zavolala setShootingMode() nad canon
-
+* Generické commandy přes reflexe
 
 Nápady:
 
 * Visitor na počítání herních objektů
+
