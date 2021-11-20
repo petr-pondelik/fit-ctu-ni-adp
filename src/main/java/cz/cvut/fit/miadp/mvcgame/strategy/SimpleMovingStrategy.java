@@ -3,7 +3,13 @@ package cz.cvut.fit.miadp.mvcgame.strategy;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 
+
 public class SimpleMovingStrategy implements IMovingStrategy {
+
+    @Override
+    public String getName() {
+        return "Simple";
+    }
 
     @Override
     public void updatePosition(AbsMissile missile) {

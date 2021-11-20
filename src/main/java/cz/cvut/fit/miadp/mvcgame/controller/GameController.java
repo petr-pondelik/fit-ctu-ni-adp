@@ -29,7 +29,7 @@ public class GameController {
             case "A":
                 this.registerCommandByName("aimCannonUp");
                 break;
-            case "Z":
+            case "S":
                 this.registerCommandByName("aimCannonDown");
                 break;
             case "Q":

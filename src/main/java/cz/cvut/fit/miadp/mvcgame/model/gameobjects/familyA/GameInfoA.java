@@ -14,8 +14,12 @@ public class GameInfoA extends AbsGameInfo {
         this.gameModel = gameModel;
     }
 
-    public String getText() {       
-        return "SCORE: " + this.gameModel.getScore();
+    public String getText() {
+        return  "SCORE: " + this.gameModel.getScore()
+                + " | " + "POWER: " + this.gameModel.getCannon().getPower()
+                + " | " + "ANGLE: " + (this.gameModel.getCannon().getAngle() / Math.PI) * 180 + "°"
+                + " | " + "MOVING STRATEGY: " + this.gameModel.getMovingStrategy().getName()
+                + " | " + "SHOOTING MODE: " + this.gameModel.getCannon().getShootingMode().getName();
     }
 
 }

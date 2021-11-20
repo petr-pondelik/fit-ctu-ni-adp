@@ -4,10 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryA;
+import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryB;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
 import cz.cvut.fit.miadp.mvcgame.command.AbsGenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
@@ -27,7 +29,8 @@ import cz.cvut.fit.miadp.mvcgame.strategy.SimpleMovingStrategy;
 public class GameModel implements IGameModel {
 
     private List<IObserver> observers;
-    private IGameObjectFactory goFactory;
+    private IGameObjectFactory goFactoryA;
+    private IGameObjectFactory goFactoryB;
     private IMovingStrategy movingStrategy;
 
     private int score;
@@ -43,19 +46,49 @@ public class GameModel implements IGameModel {
 
     public GameModel() {
         this.observers = new ArrayList<IObserver>();
-        this.goFactory = new GameObjectsFactoryA(this);
+        this.goFactoryA = new GameObjectsFactoryA(this);
+        this.goFactoryB = new GameObjectsFactoryB(this);
         this.movingStrategy = new SimpleMovingStrategy();
         this.score = 0;
-        this.gameInfo = this.goFactory.createGameInfo();
-        this.cannon = this.goFactory.createCannon();
+        this.gameInfo = this.goFactoryA.createGameInfo();
+        this.cannon = this.goFactoryA.createCannon();
         this.generateEnemies();
     }
 
     private void generateEnemies() {
+
+        Random rand = new Random();
+
         for (int i = 0; i < MvcGameConfig.ENEMIES_CNT; i++) {
+
+            boolean canAddEnemy = false;
+
+            int x = 0, y = 0;
+
+            while(!canAddEnemy) {
+                x = MvcGameConfig.ENEMIES_MIN_X + rand.nextInt(MvcGameConfig.ENEMIES_MAX_X - MvcGameConfig.ENEMIES_MIN_X);
+                y = MvcGameConfig.ENEMIES_MIN_Y + rand.nextInt(MvcGameConfig.ENEMIES_MAX_Y - MvcGameConfig.ENEMIES_MIN_Y);
+
+                if (this.enemies.size() < 1) {
+                    canAddEnemy = true;
+                }
+
+                boolean validDistance = true;
+
+                for (AbsEnemy enemy : this.enemies) {
+                    double dist = Math.sqrt( Math.pow(enemy.getPosition().getX() - x, 2) + Math.pow(enemy.getPosition().getY() - y, 2) );
+                    if (dist < MvcGameConfig.ENEMIES_MIN_DISTANCE) { validDistance = false; }
+                }
+
+                if (validDistance) { canAddEnemy = true; }
+            }
+
+            double enemyRand = Math.random();
+
             this.enemies.add(
-                this.goFactory.createEnemy( new Position((int) (Math.random() * 500 + 400), (int) (Math.random() * 500 + 150) ) )
+                enemyRand < 0.5 ? this.goFactoryA.createEnemy(new Position(x,y)) : this.goFactoryB.createEnemy(new Position(x,y))
             );
+
         }
     }
 

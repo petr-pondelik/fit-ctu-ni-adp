@@ -8,8 +8,16 @@ public class MvcGameConfig
 
     // General config
     public static final int MOVE_STEP = 5;
-    public static final int ENEMIES_CNT = 10;
     public static final double GRAVITY = 3.5;
+
+    // Enemies config
+    public static final int ENEMIES_CNT = 10;
+    public static final int ENEMIES_MIN_X = 300;
+    public static final int ENEMIES_MAX_X = 1180;
+    public static final int ENEMIES_MIN_Y = 100;
+    public static final int ENEMIES_MAX_Y = 620;
+    public static final int ENEMIES_MIN_DISTANCE = 100;
+    public static final double ENEMY_B_PROBABILITY = 0.5;
 
     // Game info properties
     public static final int INFO_POS_X = 10;

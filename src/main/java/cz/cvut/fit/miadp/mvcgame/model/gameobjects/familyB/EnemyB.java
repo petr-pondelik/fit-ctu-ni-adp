@@ -8,6 +8,7 @@ public class EnemyB extends AbsEnemy {
 
     public EnemyB(Position initialPosition) {
         this.position = initialPosition;
+        this.type = "2";
     }
     
 }

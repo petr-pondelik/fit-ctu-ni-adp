@@ -28,7 +28,7 @@ public class GameObjectsRender implements IVisitor {
 
     @Override
     public void visitEnemy(AbsEnemy enemy) {
-        this.gc.drawImage("images/enemy1.png", enemy.getPosition());
+        this.gc.drawImage("images/enemy" + enemy.getType() + ".png", enemy.getPosition());
     }
 
     @Override
