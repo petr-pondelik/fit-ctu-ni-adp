@@ -12,7 +12,7 @@ public interface IGameObjectFactory {
     AbsGameInfo createGameInfo();
     AbsCannon createCannon();
     AbsEnemy createEnemy(Position initialPosition);
-    AbsMissile createMissile(Position initialPosition, double initAngle, int initVelocity);
+    AbsMissile createMissile(Position initialPosition, double initAngle, double initVelocity);
     AbsCollision createCollision(Position initialPosition);
 
 }

@@ -1,15 +1,15 @@
 package cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA;
 
-import cz.cvut.fit.miadp.mvcgame.model.GameModel;
+import cz.cvut.fit.miadp.mvcgame.model.IGameModel;
 import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameInfo;
 
 
 public class GameInfoA extends AbsGameInfo {
     
-    private GameModel gameModel;
+    private IGameModel gameModel;
 
-    public GameInfoA(Position position, GameModel gameModel) {
+    public GameInfoA(Position position, IGameModel gameModel) {
         this.position = position;
         this.gameModel = gameModel;
     }

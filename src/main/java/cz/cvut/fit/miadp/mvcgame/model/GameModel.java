@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryA;
-import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryB;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
@@ -13,14 +12,14 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameInfo;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameObject;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
-import cz.cvut.fit.miadp.mvcgame.observer.IObservable;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
+import cz.cvut.fit.miadp.mvcgame.state.IShootingMode;
 import cz.cvut.fit.miadp.mvcgame.strategy.IMovingStrategy;
 import cz.cvut.fit.miadp.mvcgame.strategy.RealisticMovingStrategy;
 import cz.cvut.fit.miadp.mvcgame.strategy.SimpleMovingStrategy;
 
 
-public class GameModel implements IObservable {
+public class GameModel implements IGameModel {
 
     private List<IObserver> observers;
     private IGameObjectFactory goFactory;
@@ -170,13 +169,45 @@ public class GameModel implements IObservable {
             this.movingStrategy = new RealisticMovingStrategy();
         } else if (this.movingStrategy instanceof RealisticMovingStrategy) {
             this.movingStrategy = new SimpleMovingStrategy();
-        } else {
-
         }
     }
 
     public void toggleShootingMode() {
         this.cannon.toggleShootingMode();
+    }
+
+    private class Memento {
+        private int score;
+        private IMovingStrategy movingStrategy;
+        private Position cannonPosition;
+        private double cannonPower;
+        private double cannonAngle;
+        private IShootingMode shootingMode;
+        private List<AbsEnemy> enemies;
+    }
+
+    public Object createMemento() {
+        Memento m = new Memento();
+        m.score = this.score;
+        m.movingStrategy = this.movingStrategy;
+        m.cannonPosition = this.getCannon().getPosition();
+        m.cannonPower = this.getCannon().getPower();
+        m.cannonAngle = this.getCannon().getAngle();
+        m.shootingMode = this.getCannon().getShootingMode();
+        m.enemies = new ArrayList<>(this.enemies);
+        return m;
+    }
+
+    public void setMemento(Object memento) {
+        Memento m = (Memento) memento;
+        this.score = m.score;
+        this.movingStrategy = m.movingStrategy;
+        this.cannon.setPosition(m.cannonPosition);
+        this.cannon.setAngle(m.cannonAngle);
+        this.cannon.setPower(m.cannonPower);
+        this.cannon.setShootingMode(m.shootingMode);
+        this.enemies.clear();
+        this.enemies.addAll(m.enemies);
     }
 
 }

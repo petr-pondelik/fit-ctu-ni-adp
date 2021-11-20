@@ -2,13 +2,15 @@ package cz.cvut.fit.miadp.mvcgame.controller;
 
 import java.util.List;
 
-import cz.cvut.fit.miadp.mvcgame.model.GameModel;
+import cz.cvut.fit.miadp.mvcgame.memento.CareTaker;
+import cz.cvut.fit.miadp.mvcgame.model.IGameModel;
+
 
 public class GameController {
 
-    private GameModel model;
+    private IGameModel model;
 
-    public GameController(GameModel model) {
+    public GameController(IGameModel model) {
         this.model = model;
     }
 
@@ -36,11 +38,17 @@ public class GameController {
             case "W":
                 this.model.cannonPowerUp();
                 break;
-            case "S":
+            case "SHIFT":
                 this.model.toggleMovingStrategy();
                 break;
-            case "ALT":
+            case "CONTROL":
                 this.model.toggleShootingMode();
+                break;
+            case "S":
+                CareTaker.getInstance().createMemento();
+                break;
+            case "R":
+                CareTaker.getInstance().setMemento();
                 break;
             default:
                 System.out.println(code);

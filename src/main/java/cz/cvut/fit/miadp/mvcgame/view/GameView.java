@@ -3,7 +3,7 @@ package cz.cvut.fit.miadp.mvcgame.view;
 
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.controller.GameController;
-import cz.cvut.fit.miadp.mvcgame.model.GameModel;
+import cz.cvut.fit.miadp.mvcgame.model.IGameModel;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameObject;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.miadp.mvcgame.visitor.GameObjectsRender;
@@ -19,12 +19,12 @@ public class GameView implements IObserver {
     private GameObjectsRender render;
 
     private GameController controller;
-    private GameModel model;
+    private IGameModel model;
 
     private int updateCnt;
 
 
-    public GameView(GameModel model) {
+    public GameView(IGameModel model) {
         this.gr = null;
         this.render = new GameObjectsRender();
         this.model = model;

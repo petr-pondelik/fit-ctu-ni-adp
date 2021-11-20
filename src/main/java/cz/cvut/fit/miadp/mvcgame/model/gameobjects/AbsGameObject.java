@@ -18,6 +18,10 @@ public abstract class AbsGameObject implements IVisitable {
         return this.position;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public abstract void acceptVisitor(IVisitor visitor);
 
 }

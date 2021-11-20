@@ -7,9 +7,9 @@ import cz.cvut.fit.miadp.mvcgame.visitor.IVisitor;
 public abstract class AbsMissile extends AbsLifetimeLimitedGameObject {
     
     private double initAngle;
-    private int initVelocity;
+    private double initVelocity;
 
-    protected AbsMissile(Position initialPosition, double initAngle, int initVelocity) {
+    protected AbsMissile(Position initialPosition, double initAngle, double initVelocity) {
         super(initialPosition);
         this.initAngle = initAngle;
         this.initVelocity = initVelocity;
@@ -19,7 +19,7 @@ public abstract class AbsMissile extends AbsLifetimeLimitedGameObject {
         return initAngle;
     }
 
-    public int getInitVelocity() {
+    public double getInitVelocity() {
         return initVelocity;
     }
     

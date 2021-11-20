@@ -16,9 +16,6 @@ public class CannonB extends AbsCannon {
     
     private IGameObjectFactory goFact;
 
-    private double angle;
-    private int power;
-
     private List<AbsMissile> shootingBatch;
 
 
