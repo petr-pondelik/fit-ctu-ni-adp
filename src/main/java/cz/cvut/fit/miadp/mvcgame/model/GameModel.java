@@ -56,40 +56,38 @@ public class GameModel implements IGameModel {
     }
 
     private void generateEnemies() {
+        for (int i = 0; i < MvcGameConfig.ENEMIES_CNT; i++) {
+            this.enemies.add(this.generateEnemy());
+        }
+    }
+
+    private AbsEnemy generateEnemy() {
 
         Random rand = new Random();
+        boolean canAddEnemy = false;
+        int x = 0, y = 0;
 
-        for (int i = 0; i < MvcGameConfig.ENEMIES_CNT; i++) {
+        while(!canAddEnemy) {
+            x = MvcGameConfig.ENEMIES_MIN_X + rand.nextInt(MvcGameConfig.ENEMIES_MAX_X - MvcGameConfig.ENEMIES_MIN_X);
+            y = MvcGameConfig.ENEMIES_MIN_Y + rand.nextInt(MvcGameConfig.ENEMIES_MAX_Y - MvcGameConfig.ENEMIES_MIN_Y);
 
-            boolean canAddEnemy = false;
-
-            int x = 0, y = 0;
-
-            while(!canAddEnemy) {
-                x = MvcGameConfig.ENEMIES_MIN_X + rand.nextInt(MvcGameConfig.ENEMIES_MAX_X - MvcGameConfig.ENEMIES_MIN_X);
-                y = MvcGameConfig.ENEMIES_MIN_Y + rand.nextInt(MvcGameConfig.ENEMIES_MAX_Y - MvcGameConfig.ENEMIES_MIN_Y);
-
-                if (this.enemies.size() < 1) {
-                    canAddEnemy = true;
-                }
-
-                boolean validDistance = true;
-
-                for (AbsEnemy enemy : this.enemies) {
-                    double dist = Math.sqrt( Math.pow(enemy.getPosition().getX() - x, 2) + Math.pow(enemy.getPosition().getY() - y, 2) );
-                    if (dist < MvcGameConfig.ENEMIES_MIN_DISTANCE) { validDistance = false; }
-                }
-
-                if (validDistance) { canAddEnemy = true; }
+            if (this.enemies.size() < 1) {
+                canAddEnemy = true;
             }
 
-            double enemyRand = Math.random();
+            boolean validDistance = true;
 
-            this.enemies.add(
-                enemyRand < 0.5 ? this.goFactoryA.createEnemy(new Position(x,y)) : this.goFactoryB.createEnemy(new Position(x,y))
-            );
+            for (AbsEnemy enemy : this.enemies) {
+                double dist = Math.sqrt( Math.pow(enemy.getPosition().getX() - x, 2) + Math.pow(enemy.getPosition().getY() - y, 2) );
+                if (dist < MvcGameConfig.ENEMIES_MIN_DISTANCE) { validDistance = false; }
+            }
 
+            if (validDistance) { canAddEnemy = true; }
         }
+
+        double enemyRand = Math.random();
+
+        return enemyRand < 0.5 ? this.goFactoryA.createEnemy(new Position(x,y)) : this.goFactoryB.createEnemy(new Position(x,y));
     }
 
     public IMovingStrategy getMovingStrategy() {
@@ -168,6 +166,9 @@ public class GameModel implements IGameModel {
     public void update() {
         this.executeCmds();
         this.moveMissiles();
+        this.checkCollisions();
+        this.destroyExpiredCollisions();
+        this.notifyObservers();
     }
 
     private void moveMissiles() {
@@ -175,7 +176,6 @@ public class GameModel implements IGameModel {
             missile.move();
         }
         this.destroyMissiles();
-        this.notifyObservers();
     }
 
     private void destroyMissiles() {
@@ -186,6 +186,39 @@ public class GameModel implements IGameModel {
             }
         }
         this.missiles.removeAll(toRemove);
+    }
+
+    private void checkCollisions() {
+        List<AbsEnemy> toDelete = new ArrayList<>();
+        
+        for (AbsEnemy enemy : this.enemies) {
+            for (AbsMissile missile : this.missiles) {
+                boolean collided = enemy.hasCollided(missile.getPosition());
+                if (collided) {
+                    toDelete.add(enemy);
+                    this.collisions.add(this.goFactoryA.createCollision(enemy.getPosition()));
+                    this.score++;
+                }
+            }
+        }
+
+        this.enemies.removeAll(toDelete);
+    }
+
+    private void destroyExpiredCollisions() {
+        List<AbsCollision> toDelete = new ArrayList<>();
+
+        for (AbsCollision collision : this.collisions) {
+            if (collision.hasExpired()) {
+                toDelete.add(collision);
+            }
+        }
+
+        this.collisions.removeAll(toDelete);
+
+        for (int i = 0; i < toDelete.size(); i++) {
+            this.enemies.add(this.generateEnemy());
+        }
     }
 
     @Override

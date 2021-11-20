@@ -2,6 +2,7 @@ package cz.cvut.fit.miadp.mvcgame.config;
 
 public class MvcGameConfig 
 {
+
     // Scene config
     public static final int SCENE_WITH = 1280;
     public static final int SCENE_HEIGHT = 720;
@@ -30,5 +31,9 @@ public class MvcGameConfig
     public static final double POWER_STEP = 0.5;
     public static final double INIT_ANGLE = 0;
     public static final double ANGLE_STEP = Math.PI/20;
+
+    // Collision properties
+    public static final long COLLISION_LIFETIME = 1000;
+    public static final int HITBOX_SIZE = 20;
 
 }
