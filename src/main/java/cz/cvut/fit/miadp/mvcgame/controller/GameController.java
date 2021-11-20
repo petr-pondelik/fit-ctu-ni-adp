@@ -2,7 +2,6 @@ package cz.cvut.fit.miadp.mvcgame.controller;
 
 import java.util.List;
 
-import cz.cvut.fit.miadp.mvcgame.command.AbsGenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.command.GenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.model.IGameModel;
 

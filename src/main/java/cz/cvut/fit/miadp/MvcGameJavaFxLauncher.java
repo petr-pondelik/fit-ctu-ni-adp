@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 import cz.cvut.fit.miadp.mvcgame.MvcGame;
+import cz.cvut.fit.miadp.mvcgame.bridge.GameGraphics;
+import cz.cvut.fit.miadp.mvcgame.bridge.IGameGraphics;
+import cz.cvut.fit.miadp.mvcgame.bridge.JavaFxGraphics;
 
 public class MvcGameJavaFxLauncher extends Application {
 
@@ -39,6 +42,7 @@ public class MvcGameJavaFxLauncher extends Application {
         root.getChildren().add( canvas );
             
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        IGameGraphics gr = new GameGraphics(new JavaFxGraphics(gc));
 
         ArrayList<String> pressedKeysCodes = new ArrayList<String>();
  
@@ -51,7 +55,7 @@ public class MvcGameJavaFxLauncher extends Application {
  
                     // only add once... prevent duplicates
                     if (!pressedKeysCodes.contains(code)) {
-                        pressedKeysCodes.add( code );
+                        pressedKeysCodes.add(code);
                     }
                 }
             }
@@ -63,7 +67,7 @@ public class MvcGameJavaFxLauncher extends Application {
                 public void handle(KeyEvent e)
                 {
                     String code = e.getCode().toString();
-                    pressedKeysCodes.remove( code );
+                    pressedKeysCodes.remove(code);
                 }
             }
         );
@@ -72,11 +76,17 @@ public class MvcGameJavaFxLauncher extends Application {
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
-            {    
+            {
+                System.out.println(pressedKeysCodes);
                 theMvcGame.processPressedKeys(pressedKeysCodes);
                 pressedKeysCodes.clear();
+                try {
+                    Thread.sleep(16);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 theMvcGame.update();
-                theMvcGame.render(gc);
+                theMvcGame.render(gr);
             }
         }.start();
             

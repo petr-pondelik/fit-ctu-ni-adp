@@ -1,6 +1,8 @@
 package cz.cvut.fit.miadp.mvcgame;
 
 import java.util.List;
+
+import cz.cvut.fit.miadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.controller.GameController;
 import cz.cvut.fit.miadp.mvcgame.memento.CareTaker;
@@ -9,8 +11,6 @@ import cz.cvut.fit.miadp.mvcgame.model.IGameModel;
 import cz.cvut.fit.miadp.mvcgame.proxy.GameModelProxy;
 import cz.cvut.fit.miadp.mvcgame.view.GameView;
 
-// in future, use Bridge to remove this dependency
-import javafx.scene.canvas.GraphicsContext;
 
 public class MvcGame {
 
@@ -35,8 +35,8 @@ public class MvcGame {
         this.model.timeTick();
     }
 
-    public void render(GraphicsContext gc) {
-        this.view.setGraphicsContext(gc);
+    public void render(IGameGraphics gr) {
+        this.view.setGraphicsContext(gr);
         this.view.render();
     }
 
