@@ -20,7 +20,7 @@ public class GameObjectsFactoryB implements IGameObjectFactory {
 
     @Override
     public GameInfoB createGameInfo() {
-        return new GameInfoB(new Position(MvcGameConfig.INFO_POS_X, MvcGameConfig.INFO_POS_Y), this.model);
+        return new GameInfoB(new Position(MvcGameConfig.INFO_POS_X, MvcGameConfig.INFO_POS_Y), this.model, true, true, true, true, true);
     }
     
     @Override

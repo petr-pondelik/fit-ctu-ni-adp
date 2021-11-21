@@ -11,6 +11,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryA;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryB;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
+import cz.cvut.fit.miadp.mvcgame.builder.GameInfoBuilderA;
+import cz.cvut.fit.miadp.mvcgame.builder.GameInfoBuilderB;
+import cz.cvut.fit.miadp.mvcgame.builder.IGameInfoBuilder;
 import cz.cvut.fit.miadp.mvcgame.command.AbsGenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
@@ -31,6 +34,8 @@ public class GameModel implements IGameModel {
     private List<IObserver> observers;
     private IGameObjectFactory goFactoryA;
     private IGameObjectFactory goFactoryB;
+    private IGameInfoBuilder gameInfoBuilderA;
+    private IGameInfoBuilder gameInfoBuilderB;
     private IMovingStrategy movingStrategy;
 
     private int score;
@@ -44,13 +49,30 @@ public class GameModel implements IGameModel {
     private Queue<AbsGenericGameCommand> unexecutedCmds = new LinkedBlockingQueue<>();
     private Stack<AbsGenericGameCommand> executedCmds = new Stack<>();
 
+
     public GameModel() {
         this.observers = new ArrayList<IObserver>();
+        
         this.goFactoryA = new GameObjectsFactoryA(this);
         this.goFactoryB = new GameObjectsFactoryB(this);
+        
+        this.gameInfoBuilderA = new GameInfoBuilderA(this);
+        this.gameInfoBuilderB = new GameInfoBuilderB(this);
+        
         this.movingStrategy = new SimpleMovingStrategy();
         this.score = 0;
-        this.gameInfo = this.goFactoryA.createGameInfo();
+
+        // this.gameInfo = this.goFactoryA.createGameInfo();
+        this.gameInfo = this.gameInfoBuilderA
+                            .posX(MvcGameConfig.INFO_POS_X)
+                            .posY(MvcGameConfig.INFO_POS_Y)
+                            .withScore()
+                            .withPower()
+                            .withAngle()
+                            .withMovingStrategy()
+                            .withShootingMode()
+                            .build();
+
         this.cannon = this.goFactoryB.createCannon();
         this.generateEnemies();
     }

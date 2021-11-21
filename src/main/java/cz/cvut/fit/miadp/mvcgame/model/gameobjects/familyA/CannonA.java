@@ -1,7 +1,6 @@
 package cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
