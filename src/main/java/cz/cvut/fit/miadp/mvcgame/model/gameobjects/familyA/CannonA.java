@@ -8,16 +8,12 @@ import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
-import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 import cz.cvut.fit.miadp.mvcgame.state.SingleShootingMode;
 
 
 public class CannonA extends AbsCannon {
     
     private IGameObjectFactory goFact;
-
-    private List<AbsMissile> shootingBatch;
-
 
     public CannonA(Position initialPosition, IGameObjectFactory goFact) {
         this.position = initialPosition;
@@ -65,12 +61,24 @@ public class CannonA extends AbsCannon {
         this.shootingBatch.add(this.goFact.createMissile(new Position(this.position.getX(), this.position.getY()), this.angle, this.power));
     }
 
+    /* Template method pattern START */
+
     @Override
-    public List<AbsMissile> shoot() {
+    protected void onShootPreparation() {
         this.shootingBatch.clear();
-        // Use current state to shoot
-        this.shootingMode.shoot(this);
-        return this.shootingBatch;
     }
+
+    @Override
+    protected void onShootStart() {}
+
+    @Override
+    protected void shoot() {
+        this.shootingMode.shoot(this);
+    }
+
+    @Override
+    protected void onShootEnd() {}
+
+    /* Template method pattern END */
 
 }

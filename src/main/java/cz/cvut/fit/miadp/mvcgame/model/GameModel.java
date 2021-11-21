@@ -51,7 +51,7 @@ public class GameModel implements IGameModel {
         this.movingStrategy = new SimpleMovingStrategy();
         this.score = 0;
         this.gameInfo = this.goFactoryA.createGameInfo();
-        this.cannon = this.goFactoryA.createCannon();
+        this.cannon = this.goFactoryB.createCannon();
         this.generateEnemies();
     }
 
@@ -155,7 +155,8 @@ public class GameModel implements IGameModel {
     }
 
     public void cannonShoot() {
-        this.missiles.addAll(this.cannon.shoot());
+        this.cannon.performShoot();
+        this.missiles.addAll(this.cannon.getShootingBatch());
         this.notifyObservers();
     }
 

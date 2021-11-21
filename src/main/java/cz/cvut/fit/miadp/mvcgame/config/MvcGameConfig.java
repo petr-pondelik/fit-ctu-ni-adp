@@ -20,11 +20,11 @@ public class MvcGameConfig
     public static final int ENEMIES_MIN_DISTANCE = 100;
     public static final double ENEMY_B_PROBABILITY = 0.5;
 
-    // Game info properties
+    // Game info config
     public static final int INFO_POS_X = 10;
     public static final int INFO_POS_Y = 20;
 
-    // Cannons properties
+    // Cannons config
     public static final int CANNON_POS_X = 50;
     public static final int CANNON_POS_Y = SCENE_HEIGHT/2;
     public static final double INIT_POWER = 5.0;
@@ -32,8 +32,11 @@ public class MvcGameConfig
     public static final double INIT_ANGLE = 0;
     public static final double ANGLE_STEP = Math.PI/20;
 
-    // Collision properties
+    // Collisions config
     public static final long COLLISION_LIFETIME = 1000;
     public static final int HITBOX_SIZE = 20;
+
+    // Sounds config
+    public static final String MISSILE_SOUND = "/sounds/missile.wav";
 
 }

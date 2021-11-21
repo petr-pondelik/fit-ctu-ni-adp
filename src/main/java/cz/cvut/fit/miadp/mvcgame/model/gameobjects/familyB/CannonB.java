@@ -1,29 +1,25 @@
 package cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyB;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
-import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
-import cz.cvut.fit.miadp.mvcgame.state.DoubleShootingMode;
+import cz.cvut.fit.miadp.mvcgame.sounds.Sounds;
+import cz.cvut.fit.miadp.mvcgame.state.SingleShootingMode;
 
 
 public class CannonB extends AbsCannon {
     
     private IGameObjectFactory goFact;
 
-    private List<AbsMissile> shootingBatch;
-
 
     public CannonB(Position initialPosition, IGameObjectFactory goFact) {
         this.position = initialPosition;
 
         this.goFact = goFact;
-        this.shootingMode = new DoubleShootingMode();
+        this.shootingMode = new SingleShootingMode();
 
         this.angle = MvcGameConfig.INIT_ANGLE;
         this.power = MvcGameConfig.INIT_POWER;
@@ -65,12 +61,28 @@ public class CannonB extends AbsCannon {
         this.shootingBatch.add(this.goFact.createMissile(new Position(this.position.getX(), this.position.getY()), this.angle, this.power));
     }
 
+
+    /* Template method pattern START */
+
     @Override
-    public List<AbsMissile> shoot() {
+    protected void onShootPreparation() {
         this.shootingBatch.clear();
-        // Use current state to shoot
-        this.shootingMode.shoot(this);
-        return this.shootingBatch;
     }
+
+    @Override
+    protected void onShootStart() {}
+
+    @Override
+    protected void shoot() {
+        this.shootingMode.shoot(this);
+    }
+
+    @Override
+    protected void onShootEnd() {
+        // Unlike the CannonA, play the sound
+        Sounds.playMissileSound();
+    }
+
+    /* Template method pattern END */
 
 }
