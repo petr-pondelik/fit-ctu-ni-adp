@@ -1,7 +1,7 @@
 package cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyB;
 
 import java.util.ArrayList;
-import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
+import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectsFactory;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.Vector;
@@ -12,10 +12,10 @@ import cz.cvut.fit.miadp.mvcgame.state.SingleShootingMode;
 
 public class CannonB extends AbsCannon {
     
-    private IGameObjectFactory goFact;
+    private IGameObjectsFactory goFact;
 
 
-    public CannonB(Position initialPosition, IGameObjectFactory goFact) {
+    public CannonB(Position initialPosition, IGameObjectsFactory goFact) {
         this.position = initialPosition;
 
         this.goFact = goFact;
@@ -58,7 +58,7 @@ public class CannonB extends AbsCannon {
     }
 
     public void primitiveShoot() {
-        this.shootingBatch.add(this.goFact.createMissile(new Position(this.position.getX(), this.position.getY()), this.angle, this.power));
+        this.shootingBatch.add(this.goFact.createMissile(this.angle, this.power));
     }
 
 

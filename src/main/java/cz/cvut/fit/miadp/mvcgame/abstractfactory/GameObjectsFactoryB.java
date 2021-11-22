@@ -10,7 +10,7 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyB.GameInfoB;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyB.MissileB;
 
 
-public class GameObjectsFactoryB implements IGameObjectFactory {
+public class GameObjectsFactoryB implements IGameObjectsFactory {
     
     private IGameModel model;
 
@@ -34,8 +34,8 @@ public class GameObjectsFactoryB implements IGameObjectFactory {
     }
 
     @Override
-    public MissileB createMissile(Position initialPosition, double initAngle, double initVelocity) {
-        return new MissileB(initialPosition, initAngle, initVelocity, this.model.getMovingStrategy());
+    public MissileB createMissile(double initAngle, double initVelocity) {
+        return new MissileB(this.model.getCannonPosition(), initAngle, initVelocity, this.model.getMovingStrategy());
     }
 
     @Override

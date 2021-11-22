@@ -7,12 +7,12 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameInfo;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 
-public interface IGameObjectFactory {
+public interface IGameObjectsFactory {
     
     AbsGameInfo createGameInfo();
     AbsCannon createCannon();
     AbsEnemy createEnemy(Position initialPosition);
-    AbsMissile createMissile(Position initialPosition, double initAngle, double initVelocity);
+    AbsMissile createMissile(double initAngle, double initVelocity);
     AbsCollision createCollision(Position initialPosition);
 
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryA;
 import cz.cvut.fit.miadp.mvcgame.abstractfactory.GameObjectsFactoryB;
-import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectFactory;
+import cz.cvut.fit.miadp.mvcgame.abstractfactory.IGameObjectsFactory;
 import cz.cvut.fit.miadp.mvcgame.builder.GameInfoBuilderA;
 import cz.cvut.fit.miadp.mvcgame.builder.GameInfoBuilderB;
 import cz.cvut.fit.miadp.mvcgame.builder.IGameInfoBuilder;
@@ -32,8 +32,8 @@ import cz.cvut.fit.miadp.mvcgame.strategy.SimpleMovingStrategy;
 public class GameModel implements IGameModel {
 
     private List<IObserver> observers;
-    private IGameObjectFactory goFactoryA;
-    private IGameObjectFactory goFactoryB;
+    private IGameObjectsFactory goFactoryA;
+    private IGameObjectsFactory goFactoryB;
     private IGameInfoBuilder gameInfoBuilderA;
     private IGameInfoBuilder gameInfoBuilderB;
     private IMovingStrategy movingStrategy;

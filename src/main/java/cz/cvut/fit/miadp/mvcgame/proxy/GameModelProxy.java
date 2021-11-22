@@ -4,6 +4,7 @@ import java.util.List;
 
 import cz.cvut.fit.miadp.mvcgame.command.AbsGenericGameCommand;
 import cz.cvut.fit.miadp.mvcgame.model.IGameModel;
+import cz.cvut.fit.miadp.mvcgame.model.Position;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsGameInfo;
@@ -79,6 +80,11 @@ public class GameModelProxy implements IGameModel {
     @Override
     public AbsCannon getCannon() {
         return this.subject.getCannon();
+    }
+
+    @Override
+    public Position getCannonPosition() {
+        return this.subject.getCannonPosition();
     }
 
     @Override

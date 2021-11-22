@@ -27,6 +27,7 @@ public interface IGameModel extends IObservable {
     public int getScore();
     public AbsGameInfo getGameInfo();
     public AbsCannon getCannon();
+    public Position getCannonPosition();
     public List<AbsEnemy> getEnemies();
     public List<AbsMissile> getMissiles();
     public List<AbsGameObject> getGameObjects();
